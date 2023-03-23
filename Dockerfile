@@ -40,7 +40,7 @@ WORKDIR /azp
 
 COPY ./start.sh .
 COPY ./cache-images.s? .
-RUN chmod +x cache-images.s?
-RUN chmod +x start.sh
+RUN test -f ./cache-images.sh && chmod 755 ./cache-images.sh || echo 'no cached images are used'
+RUN chmod 755 ./start.sh
 
 ENTRYPOINT [ "./start.sh" ]
