@@ -50,6 +50,15 @@ wait_for_docker() {
   
 }
 
+pruneDocker() {
+  print_header "Start docker cleanup loop"
+  while true; do
+    echo "prune docker images"
+    docker image prune -f
+    sleep 3600
+  done
+}
+
 print_header() {
   lightcyan='\033[1;36m'
   nocolor='\033[0m'
@@ -88,6 +97,8 @@ export COMPOSE_HTTP_TIMEOUT=120
 /etc/init.d/docker start
 
 wait_for_docker
+
+pruneDocker &
 
 trap 'cleanup; exit 0' EXIT
 trap 'cleanup; exit 130' INT
