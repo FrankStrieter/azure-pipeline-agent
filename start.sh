@@ -16,6 +16,8 @@ if [ -z "$AZP_TOKEN_FILE" ]; then
   echo -n $AZP_TOKEN > "$AZP_TOKEN_FILE"
 fi
 
+
+
 unset AZP_TOKEN
 
 if [ -n "$AZP_WORK" ]; then
@@ -88,6 +90,7 @@ print_header "2. Downloading and extracting Azure Pipelines agent..."
 
 curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
 
+source /root/.profile
 source ./env.sh
 
 usermod -aG docker $(whoami)
