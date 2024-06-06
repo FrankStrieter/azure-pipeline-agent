@@ -1,5 +1,6 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 ENV TZ=Europe/Berlin
+ENV AGENT_ALLOW_RUNASROOT="true"
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
@@ -31,7 +32,7 @@ RUN DEBIAN_FRONTEND=noninteractive mkdir -p /etc/apt/keyrings && \
    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/nul
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -qq --no-install-recommends \
-  docker-ce docker-ce-cli containerd.io docker-compose-plugin powershell && pip install urllib3 chardet docker-compose
+  docker-ce docker-ce-cli containerd.io docker-compose-plugin powershell
 
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
@@ -58,5 +59,6 @@ COPY ./start.sh .
 COPY ./cache-images.s? .
 RUN test -f ./cache-images.sh && chmod 755 ./cache-images.sh || echo 'no cached images are used'
 RUN chmod 755 ./start.sh
+
 
 ENTRYPOINT [ "./start.sh" ]

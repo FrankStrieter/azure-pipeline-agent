@@ -90,13 +90,15 @@ print_header "2. Downloading and extracting Azure Pipelines agent..."
 
 curl -LsS $AZP_AGENT_PACKAGE_LATEST_URL | tar -xz & wait $!
 
-source /root/.profile
+# source /root/.profile
 source ./env.sh
 
 usermod -aG docker $(whoami)
 su - root
 export DOCKER_CLIENT_TIMEOUT=120
 export COMPOSE_HTTP_TIMEOUT=120
+echo "ulimits: $(ulimit -Sn):$(ulimit -Hn)"; \
+sed -i 's/ulimit -Hn/# ulimit -Hn/g' /etc/init.d/docker; \
 /etc/init.d/docker start
 
 wait_for_docker
