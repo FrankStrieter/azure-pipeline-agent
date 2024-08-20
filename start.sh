@@ -27,7 +27,7 @@ fi
 export AGENT_ALLOW_RUNASROOT="1"
 
 cleanup() {
- 
+
     print_header "Cleanup. Removing Azure Pipelines agent..."
 
     # If the agent has some running jobs, the configuration removal process will fail.
@@ -38,25 +38,25 @@ cleanup() {
       echo "Retrying in 30 seconds..."
       sleep 30
     done
-  
+
 }
 wait_for_docker() {
     print_header "Waiting for docker..."
-    
+
     while ! docker ps; do
-      
+
       echo "Docker deamon not ready, retrying in 15 seconds..."
       /etc/init.d/docker restart
       sleep 15
     done
-  
+
 }
 
 pruneDocker() {
   print_header "Start docker cleanup loop"
   while true; do
-    echo "prune docker images"
-    docker image prune -f
+    echo "prune docker"
+    docker system prune --volumes -f
     sleep 3600
   done
 }
