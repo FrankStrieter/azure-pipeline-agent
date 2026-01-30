@@ -24,7 +24,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -qq --no
     wget \
     zip \
     unzip
-    
+
 RUN DEBIAN_FRONTEND=noninteractive mkdir -p /etc/apt/keyrings && \
  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
  wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb" && \
@@ -34,7 +34,7 @@ RUN DEBIAN_FRONTEND=noninteractive mkdir -p /etc/apt/keyrings && \
    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/nul
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -qq --no-install-recommends \
-  docker-ce docker-ce-cli containerd.io docker-compose-plugin powershell
+  docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-buildx-plugin powershell
 
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
