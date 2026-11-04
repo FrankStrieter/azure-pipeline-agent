@@ -9,4 +9,5 @@
 - optional: copy `.cache-images.sh.template` to `.cache-images.sh`
   - put docker pull commands in the scipt for images you need to use often
 - run `docker-compose up -d` to start your agent
+  - the docker data of the agent is stored in the volume `docker-data`; if you update an existing agent, run `docker-compose up -d --build --force-recreate` so the volume is mounted
 - you will see it as online at `https://dev.azure.com/{your_organization}/{your_project}/_settings/agentqueues`

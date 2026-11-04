@@ -9,3 +9,9 @@ services:
           memory: 15gb
     env_file:
       - .env
+    volumes:
+      # the inner docker daemon cannot store its overlay layers on the container's own overlayfs
+      - docker-data:/var/lib/docker
+
+volumes:
+  docker-data:
