@@ -62,5 +62,7 @@ COPY ./cache-images.s? .
 RUN test -f ./cache-images.sh && chmod 755 ./cache-images.sh || echo 'no cached images are used'
 RUN chmod 755 ./start.sh
 
+# Keep the inner docker data off the container's overlayfs (overlay on overlay breaks image pulls and container starts)
+VOLUME /var/lib/docker
 
 ENTRYPOINT [ "./start.sh" ]
