@@ -14,6 +14,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -qq --no
     ca-certificates \
     curl \
     git \
+    git-lfs \
     iputils-ping \
     jq \
     lsb-release \
@@ -24,6 +25,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -qq --no
     wget \
     zip \
     unzip
+
+RUN git lfs install --system
 
 RUN DEBIAN_FRONTEND=noninteractive mkdir -p /etc/apt/keyrings && \
  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg && \
