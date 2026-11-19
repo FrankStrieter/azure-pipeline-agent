@@ -1,6 +1,8 @@
-FROM ubuntu:22.04
+FROM ubuntu:26.04
 ENV TZ=Europe/Berlin
 ENV AGENT_ALLOW_RUNASROOT="true"
+# Since Ubuntu 23.04 pip refuses to install into the system python (PEP 668), keep "pip install" working in pipelines
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
@@ -31,10 +33,14 @@ RUN DEBIAN_FRONTEND=noninteractive mkdir -p /etc/apt/keyrings && \
  dpkg -i packages-microsoft-prod.deb && \
  echo \
    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/nul
+   $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y -qq --no-install-recommends \
   docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-buildx-plugin powershell
+
+# Ubuntu's own git package lags behind upstream, the git-core PPA provides the current stable release
+RUN DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:git-core/ppa && \
+  apt-get update && apt-get install -y -qq --no-install-recommends git
 
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
